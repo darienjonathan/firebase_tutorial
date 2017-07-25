@@ -11,9 +11,11 @@ API、検証、NoSQLクラウドデータベース、とクラウドファンク
 ### 「Firebase」というのはなんですか?  
 定義（英語のウィキペディア）：モバイルとウェブアプリ開発プラットフォーム。  
 FirebaseはGoogleのクラウドサービスです。提供されるサービスはモバイルとウェブ開発に特化があります。開発者はサービスを使ってアプリを立てて、インフラの部分はアプリのニーズ（負荷や帯域など）に基づいてFirebase側から自動的に調整します。  
-Firebaseから提供されるサービスがたくさんありますが、このブログ投稿の中心はFirebaseのRealtime Database（NoSQLっぽい仕組みがあるデータベース）とCloud Functions（他のFirebaseの機能のトリガー関数）です。  
-他の使用可能なサービスはFirebaseの公式ウェブサイトを参照してください：[Firebase](https://firebase.google.com/)
-Firebaseのスタートガイドにここを参照してください：[Firebase Docs](https://firebase.google.com/docs/)
+Firebaseから提供されるサービスがたくさんありますが、このブログ投稿の中心はFirebaseのRealtime Database（NoSQLっぽい仕組みがあるデータベース）とCloud Functions（他のFirebaseの機能のトリガー関数）です。  
+他の使用可能なサービスはFirebaseの公式ウェブサイトを参照してください：  
+[Firebase](https://firebase.google.com/)  
+Firebaseのスタートガイドにここを参照してください：  
+[Firebase Docs](https://firebase.google.com/docs/)  
 
 ---
 ## Firebase Realtime Database

@@ -70,7 +70,6 @@ firebase.database.ref('animals').push({fish: "whale"})
   }
 }
 ```
-> `push`は時間を基づいてキーを生成しますから、`push`のキーで書き込まれたデータの順番はちゃんと維持することができます。それで、データは時系列的に順番する場合は、`push`で書き込むのはおすすめです。
         * `update(object)`: いくつか参照にあるデータを上書きせずに書き込みとか更新とかしたい場合は、`update`でできます。
         * `transaction(function(data), callback)`: 同時にデータ更新の可能性がある場合は、データの整合性が破損される可能性があります。データ整合性が破損されることを防ぐために、データ処理は`transaction`で含めます。あるクライアントは`transaction`でデータを更新中時に他のクライアントは同じデータも更新したかったら、その呼び出しが解消して、`function`は現在の`data`でもう一回呼び出されます。
         `function`は更新の関数、`data`は存在しているデータです。現在にあるデータを読み取って、`function`でデータを更新して、更新された`data`をリターンします。更新が成功した後、任意に`callback`を実行するもできます。
@@ -79,6 +78,8 @@ firebase.database.ref('animals').push({fish: "whale"})
         * `once(event, callback)` または `once(event).then(callback)`：上と似ていますが、一回しか読み取りません。
         * リスナーは`off()`でデタッチすることができます。
         `callback`の`snapshot`というパラメータに`reference`にあるデータが含んでいます。
+        
+> `push`は時間を基づいてキーを生成しますから、`push`のキーで書き込まれたデータの順番はちゃんと維持することができます。それで、データは時系列的に順番する場合は、`push`で書き込むのはおすすめです。
 > `event`の一覧：[Interface: Reference | Firebase](https://firebase.google.com/docs/reference/admin/node/admin.database.Reference#on)
     * 削除
     `remove()`で`reference`に保存されるデータを削除することができます。`update(null)`と`set(null)`でも削除できます。

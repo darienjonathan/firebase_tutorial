@@ -78,11 +78,14 @@ firebase.database.ref('animals').push({fish: "whale"})
         * `once(event, callback)` または `once(event).then(callback)`：上と似ていますが、一回しか読み取りません。
         * リスナーは`off()`でデタッチすることができます。
         `callback`の`snapshot`というパラメータに`reference`にあるデータが含んでいます。
-        
-> `push`は時間を基づいてキーを生成しますから、`push`のキーで書き込まれたデータの順番はちゃんと維持することができます。それで、データは時系列的に順番する場合は、`push`で書き込むのはおすすめです。
-> `event`の一覧：[Interface: Reference | Firebase](https://firebase.google.com/docs/reference/admin/node/admin.database.Reference#on)
+```     
     * 削除
     `remove()`で`reference`に保存されるデータを削除することができます。`update(null)`と`set(null)`でも削除できます。
+
+> `push`は時間を基づいてキーを生成しますから、`push`のキーで書き込まれたデータの順番はちゃんと維持することができます。それで、データは時系列的に順番する場合は、`push`で書き込むのはおすすめです。
+
+> `event`の一覧：[Interface: Reference | Firebase](https://firebase.google.com/docs/reference/admin/node/admin.database.Reference#on)
+
 データ一覧のソートやフィルターなどはここを参照してください：[Work with Lists of Data on the Web  |  Firebase](https://firebase.google.com/docs/database/web/lists-of-data)
 
 ### リアルタイム的にクライアントデータを更新できる機能
@@ -90,7 +93,9 @@ firebase.database.ref('animals').push({fish: "whale"})
 事例：
 チャットアプリのフロント側に`on(‘child_added’)`というフックがある場合は、ユーザーAがチャットを送信した（データベースにデータを書き込む）次第に、ユーザーBの画面にそのチャットがすぐ表示できます。
 下記の両方のGIFは、Firebaseのリアルタイム機能を示します。
+
 ![realtime-demo](./realtime-demo.gif)
+
 ![realtime-demo-again](./realtime-demo-again.gif)
 
 ### 書き込み・読み取り承認

@@ -83,7 +83,7 @@ firebase.database.ref('animals').push({fish: "whale"})
   }
 }
 ```
-> `push`は時間を基づいてキーを生成しますから、`push`のキーで書き込まれたデータの順番はちゃんと維持することができます。それで、データは時系列的に順番する場合は、`push`で書き込むのはおすすめです。
+`push`は時間を基づいてキーを生成しますから、`push`のキーで書き込まれたデータの順番はちゃんと維持することができます。それで、データは時系列的に順番する場合は、`push`で書き込むのはおすすめです。
 
 > `event`の一覧：[Interface: Reference | Firebase](https://firebase.google.com/docs/reference/admin/node/admin.database.Reference#on)
 > 
@@ -118,7 +118,7 @@ Firebase Realtime Databaseは承認の機能を持っています。基本的に
   }
 }
 ```
-> `$username`の追記：変数名　(`username`)　の前に`$`がつけられます。その`$`は特別な機能を持っています。`$`がつけられると`$username`は任意なバリューが受けられます。
+`$username`の追記：変数名　(`username`)　の前に`$`がつけられます。その`$`は特別な機能を持っています。`$`がつけられると`$username`は任意なバリューが受けられます。
 
 上のJSONで、`/$username/id`に読み取ることができますが、そこにデータを書き込むことができません。`/$username/hobby`に両方ができます。
 そのような承認を強制しつつ、開発者はまだ書き込む禁止の`reference`にデータを簡単に書き込むことができるはずです。そのために、開発のコードに（サーバーコードとか）、アドミンの権限を持たないといけません。
@@ -172,7 +172,7 @@ project_root
   * `FIREBASE_TOKEN`環境変数に保存する場合は、自動的に用いられます。
   * 全てのコマンドは `--token {token}`フラグで実行します。
 ### ファンクションを書く
-![cloud-functions-demo](./realtime-demo-again.gif)
+![cloud-functions-demo](./cloud-functions-demo.gif)
 
 上のGIFはRealtime Databaseのデモと似ていますが、データを書き込んだ後に、ある新しい文字列も`message`に自動的に書き込まれました。このような機能を実装しましょう！
 ```javascript

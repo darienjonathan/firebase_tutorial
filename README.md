@@ -13,7 +13,7 @@ API、検証、NoSQLクラウドデータベース、とクラウドファンク
 
 ### 「Firebase」というのはなんですか?  
 定義（英語のウィキペディア）：モバイルとウェブアプリ開発プラットフォーム。  
-  
+
 FirebaseはGoogleのクラウドサービスです。提供されるサービスはモバイルとウェブ開発に特化があります。開発者はサービスを使ってアプリを立てて、インフラの部分はアプリのニーズ（負荷や帯域など）に基づいてFirebase側から自動的に調整します。  
 
 Firebaseから提供されるサービスがたくさんありますが、このブログ投稿の中心はFirebaseのRealtime Database（NoSQLっぽい仕組みがあるデータベース）とCloud Functions（他のFirebaseの機能のトリガー関数）です。  
@@ -107,7 +107,9 @@ firebase.database.ref('animals').push({fish: "whale"})
 ![realtime-demo-again](./realtime-demo-again.gif)
 
 ### 書き込み・読み取り承認
-クライアント側はデータを一定な`reference`に書き込むために、その`reference`に対して書き込み承認が必須です。ですが、機密データが存在されている`reference`がある可能性があるので、クライアントはデータをそのような`reference`に書いてはいけません。フロントロジックはクライアントに晒される（少なくともウェブブラウザーに）ので、このような脆弱性の搾取を防ぐために適当な承認を強制しないといけません。
+クライアント側はデータを一定な`reference`に書き込むために、その`reference`に対して書き込み承認が必須です。ですが、機密データが存在されている`reference`がある可能性があるので、クライアントはデータをそのような`reference`に書いてはいけません。  
+
+フロントロジックはクライアントに晒される（少なくともウェブブラウザーに）ので、このような脆弱性の搾取を防ぐために適当な承認を強制しないといけません。  
 Firebase Realtime Databaseは承認の機能を持っています。基本的には、JSONで`references`の仕組みを書いて、その`references`に対して権限をつけます。
 ```javascript
 {
@@ -127,8 +129,8 @@ Firebase Realtime Databaseは承認の機能を持っています。基本的に
 ```
 `$username`の追記：変数名　(`username`)　の前に`$`がつけられます。その`$`は特別な機能を持っています。`$`がつけられると`$username`は任意なバリューが受けられます。
 
-上のJSONで、`/$username/id`に読み取ることができますが、そこにデータを書き込むことができません。`/$username/hobby`に両方ができます。
-そのような承認を強制しつつ、開発者はまだ書き込む禁止の`reference`にデータを簡単に書き込むことができるはずです。そのために、開発のコードに（サーバーコードとか）、アドミンの権限を持たないといけません。
+上のJSONで、`/$username/id`に読み取ることができますが、そこにデータを書き込むことができません。`/$username/hobby`に両方ができます。  
+そのような承認を強制しつつ、開発者はまだ書き込む禁止の`reference`にデータを簡単に書き込むことができるはずです。そのために、開発のコードに（サーバーコードとか）、アドミンの権限を持たないといけません。  
 アドミン権限の設定はここを参照してください：[Introduction to the Admin Database API  |  Firebase](https://firebase.google.com/docs/database/admin/start)
 
 ### RubyでFirebase Realtime Databaseを使う
@@ -207,18 +209,18 @@ exports.tutorial = functions.database.ref('/animals/{phylum}/{classes}')
   * `onCreate`（新しいデータの書き込み）、
   * `onUpdate`（データの更新）、と
   * `onDelete`（データの削除）です。
-* `event`のオブジェクトに色々なデータが含まれますが、頻繁に使っているデータは：
+2. `event`のオブジェクトに色々なデータが含まれますが、頻繁に使っているデータは：
   * `data.val()` -> 書き込まれたデータのバリュー
   * `data.key` -> 書き込まれたデータのキー
   * `data.ref` -> 書き込まれたデータの参照 (`firebase.database.Reference`オブジェクトを返します）。
   * `params.{wildcard}` -> 「周囲」パラメータ (“surround” parameters)。ワイルドカードで、合致されたパラメーターを晒します。上の事例に、周囲パラメータは`{phylum}`と`{classes}`です。ユーザーは`/animals/invertebrate/crustaceans`にデータを書き込む場合は、`{phylum}`は`invertebrate`になって、`{classes}`は`crustaceans`になります。
-2. 欲しい参照にFirebase Realtime Databaseのメソットでデータを書き込みます。
+3. 欲しい参照にFirebase Realtime Databaseのメソットでデータを書き込みます。
    1. `message`の`firebase.database.Reference`オブジェクトを`data.ref`で生成します
    2. 今回順番を守りたいので、`reference.push().key`でキーを生成します。
    3. データとキーはハッシュに入れます。
    4. `update`でハッシュをFirebase Realtime  Databaseに保存します。
-3. 処理が終わった後、プロミスのオブジェクト（`set`とか、`update`とか）をリターンするのは忘れないでください。
-4. 終わりです！
+4. 処理が終わった後、プロミスのオブジェクト（`set`とか、`update`とか）をリターンするのは忘れないでください。
+5. 終わりです！
 npmのパッケージも用いることができますので、色々な面白い実装を書き込めますよ！
 ### ファンクションを書く前に
 コードを書く前に、注意点は下に記載します：
@@ -230,10 +232,10 @@ npmのパッケージも用いることができますので、色々な面白�
 6. デバグが難しいです。オンラインでデバグすると、ログで頼らないといけないんですが、毎回デプロイしないといけないのも不便だし、(5)の通りにログも遅いし。それで、オンラインでデバグがやりづらくなります。オフラインデバグの場合は、ユニットテストは`sinon`と`chai`で実装されています。非同期プログラミングをデバグする経験があるのは必要だと思います。経験がないとデバグがやりづらくなります。
 ---
 ## 課金
-無料アカウントに色々な厳しい制限があるので、自由に使う必要があれば、課金アカウントを作ったほうがいいです。二つ課金プランがあります：固定プランと柔軟プラン（従量制）です。
+無料アカウントに色々な厳しい制限があるので、自由に使う必要があれば、課金アカウントを作ったほうがいいです。二つ課金プランがあります：固定プランと柔軟プラン（従量制）です。  
 固定プランの費用は25ドル/月があります。
 詳しくはここを参照してください：[Firebase Pricing](https://firebase.google.com/pricing/)
 
 ## 最終
-読んでくれて、ありがとうございます！^^
+読んでくれて、ありがとうございます！^^  
 デモのコードは[GitHub - darienjonathan/firebase_tutorial](https://github.com/darienjonathan/firebase_tutorial)に書いてあります。自由にcloneとかforkしてください！

@@ -1,0 +1,121 @@
+<html>
+  <body>
+    <table>
+      <tr>
+        <td>Crustaceans</td>
+        <td><input id="crustaceansKey"></td>
+        <td><input id="crustaceansName"></td>
+        <td><button id="submitCrustaceans">Update Crustaceans!</button></td>
+      </tr>
+      <tr>
+        <td>Insects</td>
+        <td><input id="insectsKey"></td>
+        <td><input id="insectsName"></td>
+        <td><button id="submitInsects">Update Insects!</button></td>
+      </tr>
+      <tr>
+        <td>Birds</td>
+        <td><input id="birdsKey"></td>
+        <td><input id="birdsName"></td>
+        <td><button id="submitBirds">Update Birds!</button></td>
+      </tr>
+      <tr>
+        <td>Mammals</td>
+        <td><input id="mammalsKey"></td>
+        <td><input id="mammalsName"></td>
+        <td><button id="submitMammals">Update Mammals!</button></td>
+      </tr>
+    </table>
+    <div id="showCrustaceans">Crustaceans:<br></div>
+    <hr>
+    <div id="showInsects">Insects:<br></div>
+    <hr>
+    <div id="showBirds">Birds:<br></div>
+    <hr>
+    <div id="showMammals">Mammals:<br></div>
+    <hr>
+    <div id="showMessages">Entry Log:<br></div>
+  </body>
+</html>
+
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.js"
+  integrity="sha256-tA8y0XqiwnpwmOIl3SGAcFl2RvxHjA8qp0+1uCGmRmg="
+  crossorigin="anonymous"></script>
+<script>
+  const config = {
+    apiKey: "AIzaSyD2mic7rsQf6z2FRf0951ViOxkd97tnKzA",
+    authDomain: "kayac-tech-blog.firebaseapp.com",
+    databaseURL: "https://kayac-tech-blog.firebaseio.com",
+    projectId: "kayac-tech-blog",
+    storageBucket: "kayac-tech-blog.appspot.com",
+    messagingSenderId: "164288839649"
+  };
+  firebase.initializeApp(config);
+  const db = firebase.database();
+
+  function setAnimalData(phylum, classis, animal) {
+    db.ref('animals/'+phylum+'/'+classis).set(animal);
+  }
+
+  function updateAnimalData(phylum, classis, animal) {
+    db.ref('animals/'+phylum+'/'+classis).update(animal);
+  }
+
+  function listDatas(key, value, doc){
+    doc.innerHTML += key+": "+value+"<br>";
+  }
+
+  function readFirebaseDatas(){
+    const invertebrateRef = db.ref('animals/invertebrate/');
+    const vertebrateRef = db.ref('animals/vertebrate/');
+    const crustaceans = invertebrateRef.child('crustaceans');
+    const insects = invertebrateRef.child('insects');
+    const birds = vertebrateRef.child('birds');
+    const mammals = vertebrateRef.child('mammals');
+    const log = db.ref('message');
+    let refs = [["showCrustaceans", crustaceans], ["showInsects", insects], ["showBirds", birds], ["showMammals", mammals]];
+    for(let i = 0; i < refs.length; i++){
+      refs[i][1].on('child_added', (snapshot) => {
+        let doc = document.getElementById(refs[i][0]);
+        listDatas(snapshot.key, snapshot.val(), doc);
+      });
+    }
+
+    log.on('child_added', (snapshot) => {
+      let doc = document.getElementById("showMessages");
+      doc.innerHTML += snapshot.val().message+"<br>";
+    })
+  }
+
+  $(document).ready( () => {
+    readFirebaseDatas();
+    $("#submitCrustaceans").click(() => {
+      let animal = new Object();
+      console.log($("#crustaceansKey").val());
+      animal[$("#crustaceansKey").val()] = $("#crustaceansName").val();
+      updateAnimalData("invertebrate", "crustaceans", animal);
+    })
+    $("#submitInsects").click(() => {
+      let animal = new Object();
+      console.log($("#insectsKey").val());
+      animal[$("#insectsKey").val()] = $("#insectsName").val();
+      updateAnimalData("invertebrate", "insects", animal);
+    })
+    $("#submitBirds").click(() => {
+      let animal = new Object();
+      console.log($("#birdsKey").val());
+      animal[$("#birdsKey").val()] = $("#birdsName").val();
+      updateAnimalData("vertebrate", "birds", animal);
+    })
+    $("#submitMammals").click(() => {
+      let animal = new Object();
+      console.log($("#mammalsKey").val());
+      animal[$("#mammalsKey").val()] = $("#mammalsName").val();
+      updateAnimalData("vertebrate", "mammals", animal);
+    })
+
+  })
+
+</script>

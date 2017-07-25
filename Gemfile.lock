@@ -1,0 +1,19 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    dotenv (2.2.1)
+    firebase (0.2.6)
+      httpclient
+      json
+    httpclient (2.8.3)
+    json (2.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  dotenv
+  firebase
+
+BUNDLED WITH
+   1.15.1

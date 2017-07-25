@@ -110,6 +110,7 @@ firebase.database.ref('animals').push({fish: "whale"})
 クライアント側はデータを一定な`reference`に書き込むために、その`reference`に対して書き込み承認が必須です。ですが、機密データが存在されている`reference`がある可能性があるので、クライアントはデータをそのような`reference`に書いてはいけません。  
 
 フロントロジックはクライアントに晒される（少なくともウェブブラウザーに）ので、このような脆弱性の搾取を防ぐために適当な承認を強制しないといけません。  
+
 Firebase Realtime Databaseは承認の機能を持っています。基本的には、JSONで`references`の仕組みを書いて、その`references`に対して権限をつけます。
 ```javascript
 {
@@ -130,6 +131,7 @@ Firebase Realtime Databaseは承認の機能を持っています。基本的に
 `$username`の追記：変数名　(`username`)　の前に`$`がつけられます。その`$`は特別な機能を持っています。`$`がつけられると`$username`は任意なバリューが受けられます。
 
 上のJSONで、`/$username/id`に読み取ることができますが、そこにデータを書き込むことができません。`/$username/hobby`に両方ができます。  
+
 そのような承認を強制しつつ、開発者はまだ書き込む禁止の`reference`にデータを簡単に書き込むことができるはずです。そのために、開発のコードに（サーバーコードとか）、アドミンの権限を持たないといけません。  
 アドミン権限の設定はここを参照してください：[Introduction to the Admin Database API  |  Firebase](https://firebase.google.com/docs/database/admin/start)
 
@@ -206,14 +208,14 @@ exports.tutorial = functions.database.ref('/animals/{phylum}/{classes}')
 ```
 1. `functions.database.ref(reference).onWrite(callback(event))`。これで`/animals/{phylum}/{classes}`でデータの変更があると`callback(event)`を実行します。
 今回、イベントは`onWrite`です。`onWrite`で、どんな変更があっても`callback(event)`が実行されます。他のイベントは：
-  * `onCreate`（新しいデータの書き込み）、
-  * `onUpdate`（データの更新）、と
-  * `onDelete`（データの削除）です。
+   * `onCreate`（新しいデータの書き込み）、
+   * `onUpdate`（データの更新）、と
+   * `onDelete`（データの削除）です。
 2. `event`のオブジェクトに色々なデータが含まれますが、頻繁に使っているデータは：
-  * `data.val()` -> 書き込まれたデータのバリュー
-  * `data.key` -> 書き込まれたデータのキー
-  * `data.ref` -> 書き込まれたデータの参照 (`firebase.database.Reference`オブジェクトを返します）。
-  * `params.{wildcard}` -> 「周囲」パラメータ (“surround” parameters)。ワイルドカードで、合致されたパラメーターを晒します。上の事例に、周囲パラメータは`{phylum}`と`{classes}`です。ユーザーは`/animals/invertebrate/crustaceans`にデータを書き込む場合は、`{phylum}`は`invertebrate`になって、`{classes}`は`crustaceans`になります。
+   * `data.val()` -> 書き込まれたデータのバリュー
+   * `data.key` -> 書き込まれたデータのキー
+   * `data.ref` -> 書き込まれたデータの参照 (`firebase.database.Reference`オブジェクトを返します）。
+   * `params.{wildcard}` -> 「周囲」パラメータ (“surround” parameters)。ワイルドカードで、合致されたパラメーターを晒します。上の事例に、周囲パラメータは`{phylum}`と`{classes}`です。ユーザーは`/animals/invertebrate/crustaceans`にデータを書き込む場合は、`{phylum}`は`invertebrate`になって、`{classes}`は`crustaceans`になります。
 3. 欲しい参照にFirebase Realtime Databaseのメソットでデータを書き込みます。
    1. `message`の`firebase.database.Reference`オブジェクトを`data.ref`で生成します
    2. 今回順番を守りたいので、`reference.push().key`でキーを生成します。

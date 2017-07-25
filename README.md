@@ -8,7 +8,7 @@ API、検証、NoSQLクラウドデータベース、とクラウドファンク
 「サーバーレスコンピュティング」というのは、クラウドサービスの一つ種類です。サーバーレスコンピュティングの費用は最初から決めなくて、動的に計算されます。普通なサービスの場合は、サーバーのスペックを選んで、そのスペックによると値段が決まります。サーバーレスコンピュティングの場合は、例えば、APIのサービスだったら、課金はAPI叩く数で計算します（xxx円/叩く）。
 実際はクラウド側にサーバーがまだ必要ですが、このようなサービスの処理は開発者から隠れていますから、開発者の観点からサーバーがない感じです。開発者はサービスの設定しか何もやりません。
 
-### 「Firebase」というのはなんですか?
+### 「Firebase」というのはなんですか?  
 定義（英語のウィキペディア）：モバイルとウェブアプリ開発プラットフォーム。
 FirebaseはGoogleのクラウドサービスです。提供されるサービスはモバイルとウェブ開発に特化があります。開発者はサービスを使ってアプリを立てて、インフラの部分はアプリのニーズ（負荷や帯域など）に基づいてFirebase側から自動的に調整します。
 Firebaseから提供されるサービスがたくさんありますが、このブログ投稿の中心はFirebaseのRealtime Database（NoSQLっぽい仕組みがあるデータベース）とCloud Functions（他のFirebaseの機能のトリガー関数）です。
@@ -69,6 +69,7 @@ Firebaseのデータは**非同期的**なリスナーを`firebase.database.Refe
     * `once(event, callback)` または `once(event).then(callback)`：上と似ていますが、一回しか読み取りません。
     * リスナーは`off()`でデタッチすることができます。
     `callback`の`snapshot`というパラメータに`reference`にあるデータが含んでいます。
+  * 削除：`remove()`で`reference`に保存されるデータを削除することができます。`update(null)`と`set(null)`でも削除できます。
 
 プッシュのデモ：
 ```javascript
@@ -85,16 +86,17 @@ firebase.database.ref('animals').push({fish: "whale"})
 > `push`は時間を基づいてキーを生成しますから、`push`のキーで書き込まれたデータの順番はちゃんと維持することができます。それで、データは時系列的に順番する場合は、`push`で書き込むのはおすすめです。
 
 > `event`の一覧：[Interface: Reference | Firebase](https://firebase.google.com/docs/reference/admin/node/admin.database.Reference#on)
-  * 削除
-  `remove()`で`reference`に保存されるデータを削除することができます。`update(null)`と`set(null)`でも削除できます。
+> 
 データ一覧のソートやフィルターなどはここを参照してください：[Work with Lists of Data on the Web  |  Firebase](https://firebase.google.com/docs/database/web/lists-of-data)
 
 ### リアルタイム的にクライアントデータを更新できる機能
 上に述べた`event`で、クラウドにあるデータの更新が行なった次第に、トリガーを自動的に実行して、クライアント側にデータはリアルタイム的に更新することができます。
 事例：
 チャットアプリのフロント側に`on(‘child_added’)`というフックがある場合は、ユーザーAがチャットを送信した（データベースにデータを書き込む）次第に、ユーザーBの画面にそのチャットがすぐ表示できます。
-下記の両方のGIFは、Firebaseのリアルタイム機能を示します。
-![realtime-demo](./realtime-demo.gif)
+下記の両方のGIFは、Firebaseのリアルタイム機能を示します。  
+
+![realtime-demo](./realtime-demo.gif)  
+
 ![realtime-demo-again](./realtime-demo-again.gif)
 
 ### 書き込み・読み取り承認

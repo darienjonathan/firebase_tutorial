@@ -60,7 +60,7 @@ Firebase Realtime Databaseの重要な特徴はデータに変更があるタイ
 
 ### データベースメソッド
 * データベース参照
-データの参照は`firebase.database.Reference`というインスタンスでトラバースされます。基本的には、`firebase.database()`で、データベースの参照を取り込めます。特定な参照をトラバースしたい場合は、`firebase.database(ref)`でトラバースできます。このメソッドは`firebase.database.Reference`を返します。
+データのディレクトリは`firebase.database.Reference` というインスタンスで参照されます。基本的には、`firebase.database()`で、データベースの参照を取り込めます。特定なディレクトリを参照したい場合は、`firebase.database(ref)`で参照できます。このメソッドは`firebase.database.Reference`を返します。
 下に述べたメソッドは`firebase.database.Reference`のインスタンスメソッドです。
 * データ変更作業
 基本的には、データ変更作業は三つあります：書き込み・更新、読み取り、と削除。

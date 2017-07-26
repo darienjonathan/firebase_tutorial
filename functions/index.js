@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 
 exports.tutorial = functions.database.ref('/animals/{phylum}/{classes}')
-  .onWrite(event => {
+  .onCreate(event => {
     const original = event.data.val();
     const phylum = event.params.phylum;
     const classes = event.params.classes;
